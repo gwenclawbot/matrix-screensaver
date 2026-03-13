@@ -39,7 +39,16 @@ jobs:
         run: dotnet test ./Screensaver.sln --configuration Release --no-build
 
       - name: Install Inno Setup
-        uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+        shell: pwsh
+        run: |
+          $iscc = 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+          if (Test-Path $iscc) {
+            Write-Host "Inno Setup already present at $iscc"
+            echo "C:\Program Files (x86)\Inno Setup 6" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          } else {
+            Write-Host "Inno Setup not found; installing via Chocolatey..."
+            choco install innosetup --yes --no-progress
+          }
 
       - name: Package
         shell: pwsh
@@ -54,8 +63,8 @@ jobs:
           Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.scr" dist\ -Force
           Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.exe" dist\ -Force
           Copy-Item "$($releaseDir.FullName)\*.dll" dist\ -Force
-          Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.deps.json" dist\ -Force
-          Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.runtimeconfig.json" dist\ -Force
+          Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.deps.json" dist\ -Force -ErrorAction SilentlyContinue
+          Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.runtimeconfig.json" dist\ -Force -ErrorAction SilentlyContinue
           Copy-Item "$($releaseDir.FullName)\app-path.txt" dist\ -Force
           Copy-Item "$($releaseDir.FullName)\app" dist\app -Recurse -Force
           Compress-Archive -Path dist\* -DestinationPath dist\MatrixScreensaver.zip -Force
