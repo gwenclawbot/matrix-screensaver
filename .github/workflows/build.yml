@@ -1,0 +1,82 @@
+name: Build Matrix Screensaver
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      sync_upstream:
+        description: "Run upstream sync before build"
+        required: false
+        default: "false"
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Optionally sync upstream assets
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.sync_upstream == 'true' }}
+        shell: pwsh
+        run: ./scripts/sync_upstream.ps1
+
+      - name: Restore
+        run: dotnet restore ./Screensaver.sln
+
+      - name: Build
+        run: dotnet build ./Screensaver.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test ./Screensaver.sln --configuration Release --no-build
+
+      - name: Install Inno Setup
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+
+      - name: Package
+        shell: pwsh
+        run: ./packaging/webview2-screensaver/build-and-package.ps1
+
+      - name: Collect release files
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        shell: pwsh
+        run: |
+          $releaseDir = Get-ChildItem packaging/webview2-screensaver/out -Directory | Where-Object { $_.Name -like 'release*' } | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          New-Item -ItemType Directory -Path dist -Force | Out-Null
+          Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.scr" dist\ -Force
+          Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.exe" dist\ -Force
+          Copy-Item "$($releaseDir.FullName)\*.dll" dist\ -Force
+          Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.deps.json" dist\ -Force
+          Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.runtimeconfig.json" dist\ -Force
+          Copy-Item "$($releaseDir.FullName)\app-path.txt" dist\ -Force
+          Copy-Item "$($releaseDir.FullName)\app" dist\app -Recurse -Force
+          Compress-Archive -Path dist\* -DestinationPath dist\MatrixScreensaver.zip -Force
+          $installer = Get-ChildItem packaging/webview2-screensaver/out/installer -Filter *.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($installer) { Copy-Item $installer.FullName dist\ -Force }
+
+      - name: Publish rolling latest release
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Build
+          prerelease: true
+          body: |
+            Automatically built from the latest commit on `main`.
+
+            **One-line install (PowerShell as Administrator):**
+            ```powershell
+            irm https://raw.githubusercontent.com/gwenclawbot/matrix-screensaver/main/install.ps1 | iex
+            ```
+          files: |
+            dist/MatrixScreensaver.zip
+            dist/MatrixScreensaver.scr
+            dist/*.exe

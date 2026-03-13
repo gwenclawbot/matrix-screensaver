@@ -1,0 +1,11 @@
+This repository packages the Matrix web project as a native Windows screensaver.
+
+Upstream project:
+- Rezmason/matrix (MIT License)
+- Copyright (c) Rezmason
+
+Packaging layer:
+- MatrixScreensaver native wrapper and installer scripts
+- Copyright (c) 2026
+
+Redistributions must preserve MIT license text and attribution.

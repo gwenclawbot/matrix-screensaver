@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>MatrixScreensaver</RootNamespace>
+    <AssemblyName>MatrixScreensaver</AssemblyName>
+    <Platforms>x64</Platforms>
+    <!-- Properties/AssemblyInfo.cs supplies these; suppress SDK auto-generation -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Suppress harmless WindowsBase version conflict from WebView2 WPF DLL -->
+    <MSBuildWarningsAsMessages>MSB3277</MSBuildWarningsAsMessages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2903.40" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\..\app\**\*">
+      <Link>app\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
