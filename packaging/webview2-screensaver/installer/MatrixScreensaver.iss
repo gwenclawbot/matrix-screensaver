@@ -29,6 +29,7 @@ Name: "setactive"; Description: "Set as active screen saver for current account"
 [Files]
 Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
 Source: "{#SourceDir}\MatrixScreensaver.scr"; DestDir: "{code:GetScrTarget}"; Flags: ignoreversion
+Source: "{#SourceDir}\MicrosoftEdgeWebView2Setup.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall
 
 [Registry]
 Root: HKCU; Subkey: "Control Panel\Desktop"; ValueType: string; ValueName: "SCRNSAVE.EXE"; ValueData: "{code:GetScrTarget}\MatrixScreensaver.scr"; Flags: uninsdeletevalue; Tasks: setactive; Check: not IsAdminInstallMode
@@ -44,7 +45,17 @@ begin
     Result := ExpandConstant('{localappdata}\Microsoft\Windows\Screensavers');
 end;
 
+function IsWebView2RuntimeInstalled(): Boolean;
+var
+  VersionValue: string;
+begin
+  Result :=
+    RegQueryStringValue(HKLM, 'SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}', 'pv', VersionValue)
+    or RegQueryStringValue(HKCU, 'SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}', 'pv', VersionValue);
+end;
+
 [Run]
+Filename: "{tmp}\MicrosoftEdgeWebView2Setup.exe"; Parameters: "/silent /install"; Flags: waituntilterminated; StatusMsg: "Installing Microsoft Edge WebView2 Runtime..."; Check: not IsWebView2RuntimeInstalled
 ; Notify Windows to refresh display/screensaver settings so the new .scr
 ; appears in Screen Saver Settings without requiring a logoff/logon cycle.
 Filename: "rundll32.exe"; Parameters: "user32.dll,UpdatePerUserSystemParameters"; Flags: nowait; StatusMsg: "Refreshing display settings..."

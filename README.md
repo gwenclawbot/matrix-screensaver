@@ -12,16 +12,15 @@ Production-oriented Windows screensaver packaging of [Rezmason/matrix](https://g
 irm https://raw.githubusercontent.com/gwenclawbot/matrix-screensaver/main/install.ps1 | iex
 ```
 
-Downloads the latest build, installs to `Program Files`, and registers the screensaver with Windows.
+Downloads and runs the latest installer, installs prerequisites if needed, and registers the screensaver with Windows.
 
 ## Requirements
 
 - Windows 10/11
 - .NET 8 SDK (build only)
-- Microsoft Edge WebView2 Runtime (Evergreen)
 - Inno Setup 6+ (installer build)
 
-If WebView2 Runtime is missing at run time, the screensaver shows a direct install link.
+The installer automatically installs WebView2 Runtime when required.
 
 ## Repository Layout
 

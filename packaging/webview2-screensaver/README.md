@@ -26,4 +26,4 @@ Outputs:
 
 ## Runtime dependency
 
-WebView2 Evergreen runtime is required on target machines.
+WebView2 Evergreen runtime is installed automatically by the setup EXE when needed.

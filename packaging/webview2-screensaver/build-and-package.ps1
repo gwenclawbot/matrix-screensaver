@@ -37,7 +37,7 @@ if (-not (Test-Path (Join-Path $appSource "index.html"))) {
 }
 
 Write-Host "Publishing MatrixScreensaver..."
-& $dotnetPath publish "$projectDir\MatrixScreensaver.csproj" -c $Configuration -r $Runtime --self-contained false -p:PublishSingleFile=false -o $publishDir
+& $dotnetPath publish "$projectDir\MatrixScreensaver.csproj" -c $Configuration -r $Runtime --self-contained true -p:PublishSingleFile=false -o $publishDir
 
 try {
     if (Test-Path $effectiveReleaseDir) {
@@ -60,6 +60,11 @@ New-Item -ItemType Directory -Path $appTarget -Force | Out-Null
 
 Copy-Item -Path (Join-Path $publishDir "*") -Destination $effectiveReleaseDir -Recurse -Force
 Copy-Item -Path (Join-Path $appSource "*") -Destination $appTarget -Recurse -Force
+
+$webView2BootstrapperUrl = "https://go.microsoft.com/fwlink/p/?LinkId=2124703"
+$webView2BootstrapperPath = Join-Path $effectiveReleaseDir "MicrosoftEdgeWebView2Setup.exe"
+Write-Host "Downloading WebView2 bootstrapper..."
+Invoke-WebRequest -Uri $webView2BootstrapperUrl -OutFile $webView2BootstrapperPath
 
 $exePath = Join-Path $effectiveReleaseDir "MatrixScreensaver.exe"
 if (-not (Test-Path $exePath)) {
