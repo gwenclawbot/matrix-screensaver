@@ -11,7 +11,7 @@ public class SettingsTests
 
         var query = settings.ToQueryString();
 
-        Assert.Contains("numColumns=120", query);
+        Assert.Contains("numColumns=80", query);
         Assert.Contains("fps=60", query);
         Assert.Contains("renderer=regl", query);
     }
