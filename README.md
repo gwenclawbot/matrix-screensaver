@@ -6,13 +6,26 @@ Production-oriented Windows screensaver packaging of [Rezmason/matrix](https://g
 - `/p <hwnd>` Control Panel preview embedding.
 - `/c` configuration dialog with persisted settings.
 
-## Install (one command, run PowerShell as Administrator)
+## Download and Install
+
+### Option 1: Download installer (recommended)
+
+1. Go to: `https://github.com/gwenclawbot/matrix-screensaver/releases/latest`
+2. Download `MatrixScreensaverSetup.exe`
+3. Run the installer
+4. Open **Screen Saver Settings** and select **MatrixScreensaver**
+
+The installer installs prerequisites automatically (WebView2 Runtime) if needed.
+
+### Option 2: One command (PowerShell)
+
+Run PowerShell as Administrator, then run:
 
 ```powershell
 irm https://raw.githubusercontent.com/gwenclawbot/matrix-screensaver/main/install.ps1 | iex
 ```
 
-Downloads and runs the latest installer, installs prerequisites if needed, and registers the screensaver with Windows.
+This downloads and runs `MatrixScreensaverSetup.exe`, then sets MatrixScreensaver as active for the current user.
 
 ## Requirements
 
