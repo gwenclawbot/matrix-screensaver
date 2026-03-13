@@ -26,7 +26,7 @@ RestartApplications=no
 UninstallDisplayIcon={app}\MatrixScreensaver.scr
 
 [Tasks]
-Name: "setactive"; Description: "Set as active screen saver for current account"; Flags: unchecked
+Name: "setactive"; Description: "Set as active screen saver for current account"
 
 [Files]
 Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
@@ -34,7 +34,8 @@ Source: "{#SourceDir}\MatrixScreensaver.scr"; DestDir: "{code:GetScrTarget}"; Fl
 Source: "{#SourceDir}\MicrosoftEdgeWebView2Setup.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall
 
 [Registry]
-Root: HKCU; Subkey: "Control Panel\Desktop"; ValueType: string; ValueName: "SCRNSAVE.EXE"; ValueData: "{code:GetScrTarget}\MatrixScreensaver.scr"; Flags: uninsdeletevalue; Tasks: setactive; Check: not IsAdminInstallMode
+Root: HKCU; Subkey: "Control Panel\Desktop"; ValueType: string; ValueName: "SCRNSAVE.EXE"; ValueData: "{code:GetScrTarget}\MatrixScreensaver.scr"; Flags: uninsdeletevalue; Tasks: setactive
+Root: HKCU; Subkey: "Control Panel\Desktop"; ValueType: string; ValueName: "ScreenSaveActive"; ValueData: "1"; Flags: uninsdeletevalue; Tasks: setactive
 Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\ScreenSavers"; ValueType: string; ValueName: "MatrixScreensaverPath"; ValueData: "{app}\app"; Flags: uninsdeletevalue; Check: IsAdminInstallMode
 Root: HKCU; Subkey: "Software\MatrixScreensaver"; ValueType: string; ValueName: "AppPath"; ValueData: "{app}\app"; Flags: uninsdeletevalue; Check: not IsAdminInstallMode
 
