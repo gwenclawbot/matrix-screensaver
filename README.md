@@ -6,6 +6,14 @@ Production-oriented Windows screensaver packaging of [Rezmason/matrix](https://g
 - `/p <hwnd>` Control Panel preview embedding.
 - `/c` configuration dialog with persisted settings.
 
+## Install (one command, run PowerShell as Administrator)
+
+```powershell
+irm https://raw.githubusercontent.com/gwenclawbot/matrix-screensaver/main/install.ps1 | iex
+```
+
+Downloads the latest build, installs to `Program Files`, and registers the screensaver with Windows.
+
 ## Requirements
 
 - Windows 10/11
