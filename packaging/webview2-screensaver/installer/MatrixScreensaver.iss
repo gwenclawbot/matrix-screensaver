@@ -21,6 +21,8 @@ SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
+CloseApplications=yes
+RestartApplications=no
 UninstallDisplayIcon={app}\MatrixScreensaver.scr
 
 [Tasks]
@@ -28,7 +30,7 @@ Name: "setactive"; Description: "Set as active screen saver for current account"
 
 [Files]
 Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
-Source: "{#SourceDir}\MatrixScreensaver.scr"; DestDir: "{code:GetScrTarget}"; Flags: ignoreversion
+Source: "{#SourceDir}\MatrixScreensaver.scr"; DestDir: "{code:GetScrTarget}"; Flags: ignoreversion restartreplace
 Source: "{#SourceDir}\MicrosoftEdgeWebView2Setup.exe"; DestDir: "{tmp}"; Flags: deleteafterinstall
 
 [Registry]
