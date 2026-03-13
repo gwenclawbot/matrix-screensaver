@@ -56,6 +56,20 @@ begin
     or RegQueryStringValue(HKCU, 'SOFTWARE\Microsoft\EdgeUpdate\Clients\{F3017226-FE2A-4295-8BDF-00C3A9A7E4C5}', 'pv', VersionValue);
 end;
 
+procedure StopRunningMatrixProcesses();
+var
+  ResultCode: Integer;
+begin
+  Exec(ExpandConstant('{sys}\taskkill.exe'), '/F /IM MatrixScreensaver.scr /T', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  Exec(ExpandConstant('{sys}\taskkill.exe'), '/F /IM MatrixScreensaver.exe /T', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+end;
+
+function PrepareToInstall(var NeedsRestart: Boolean): String;
+begin
+  StopRunningMatrixProcesses();
+  Result := '';
+end;
+
 [Run]
 Filename: "{tmp}\MicrosoftEdgeWebView2Setup.exe"; Parameters: "/silent /install"; Flags: waituntilterminated; StatusMsg: "Installing Microsoft Edge WebView2 Runtime..."; Check: not IsWebView2RuntimeInstalled
 ; Notify Windows to refresh display/screensaver settings so the new .scr
