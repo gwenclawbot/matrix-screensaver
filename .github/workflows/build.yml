@@ -64,7 +64,7 @@ jobs:
           New-Item -ItemType Directory -Path dist -Force | Out-Null
           Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.scr" dist\ -Force
           Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.exe" dist\ -Force
-          Copy-Item "$($releaseDir.FullName)\*.dll" dist\ -Force
+          Copy-Item "$($releaseDir.FullName)\*.dll" dist\ -Force -ErrorAction SilentlyContinue
           Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.deps.json" dist\ -Force -ErrorAction SilentlyContinue
           Copy-Item "$($releaseDir.FullName)\MatrixScreensaver.runtimeconfig.json" dist\ -Force -ErrorAction SilentlyContinue
           Copy-Item "$($releaseDir.FullName)\app-path.txt" dist\ -Force

@@ -1,5 +1,7 @@
 namespace MatrixScreensaver;
 
+using Microsoft.Win32;
+
 internal static class AppPathResolver
 {
     public static Uri ResolveIndexHtmlUri(ScreensaverSettings settings)
@@ -26,6 +28,24 @@ internal static class AppPathResolver
         if (!string.IsNullOrWhiteSpace(configured) && Directory.Exists(configured))
         {
             return configured;
+        }
+
+        var userAppPath = Registry.GetValue(
+            @"HKEY_CURRENT_USER\Software\MatrixScreensaver",
+            "AppPath",
+            null) as string;
+        if (!string.IsNullOrWhiteSpace(userAppPath) && Directory.Exists(userAppPath))
+        {
+            return userAppPath;
+        }
+
+        var machineAppPath = Registry.GetValue(
+            @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ScreenSavers",
+            "MatrixScreensaverPath",
+            null) as string;
+        if (!string.IsNullOrWhiteSpace(machineAppPath) && Directory.Exists(machineAppPath))
+        {
+            return machineAppPath;
         }
 
         var sidecarPathFile = Path.Combine(AppContext.BaseDirectory, "app-path.txt");

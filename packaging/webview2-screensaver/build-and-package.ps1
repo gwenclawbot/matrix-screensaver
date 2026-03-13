@@ -37,7 +37,7 @@ if (-not (Test-Path (Join-Path $appSource "index.html"))) {
 }
 
 Write-Host "Publishing MatrixScreensaver..."
-& $dotnetPath publish "$projectDir\MatrixScreensaver.csproj" -c $Configuration -r $Runtime --self-contained true -p:PublishSingleFile=false -o $publishDir
+& $dotnetPath publish "$projectDir\MatrixScreensaver.csproj" -c $Configuration -r $Runtime --self-contained true -p:PublishSingleFile=true -o $publishDir
 
 try {
     if (Test-Path $effectiveReleaseDir) {
