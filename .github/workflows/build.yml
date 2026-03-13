@@ -83,10 +83,8 @@ jobs:
           body: |
             Automatically built from the latest commit on `main`.
 
-            **One-line install (PowerShell as Administrator):**
-            ```powershell
-            irm https://raw.githubusercontent.com/gwenclawbot/matrix-screensaver/main/install.ps1 | iex
-            ```
+            Download `MatrixScreensaverSetup.exe` below and run it to install.
+            WebView2 Runtime is installed automatically if not already present.
           files: |
             dist/MatrixScreensaver.zip
             dist/MatrixScreensaver.scr

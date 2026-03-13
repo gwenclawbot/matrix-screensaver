@@ -6,17 +6,19 @@
 - Fixed:
 
 ### Installation
-1. Download the installer or ZIP from this release.
-2. Run installer with per-user or system-wide mode.
-3. Open Windows Screen Saver Settings and select Matrix Screensaver.
 
-### Verification
-- [ ] /s fullscreen mode
-- [ ] /p preview inside Control Panel
-- [ ] /c settings dialog
+1. Download `MatrixScreensaverSetup.exe` from this release.
+2. Run the installer. WebView2 Runtime is installed automatically if not already present.
+3. Open Windows Screen Saver Settings and select **MatrixScreensaver**.
+
+### QA checklist
+
+- [ ] `/s` fullscreen across all displays
+- [ ] `/p` preview in Screen Saver Settings
+- [ ] `/c` settings dialog opens, saves, and restores defaults
 - [ ] Multi-monitor run
-- [ ] Exit-on-input behavior
+- [ ] Exit-on-input behavior (keyboard, mouse click, mouse move)
 
-### Upstream Sync
-- Upstream source: Rezmason/matrix @ <commit>
-- Sync script: scripts/sync_upstream.ps1
+### Upstream sync
+
+- Upstream source: Rezmason/matrix @ \<commit\>

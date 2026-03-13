@@ -1,107 +1,51 @@
-# Matrix Screensaver (WebView2 Native .scr)
+# Matrix Screensaver
 
-Production-oriented Windows screensaver packaging of [Rezmason/matrix](https://github.com/Rezmason/matrix) as a native `.scr` with full Screen Saver Settings support:
+A Windows screensaver based on [Rezmason/matrix](https://github.com/Rezmason/matrix), packaged as a native `.scr` with full Screen Saver Settings integration.
 
-- `/s` full-screen run mode across all monitors.
-- `/p <hwnd>` Control Panel preview embedding.
-- `/c` configuration dialog with persisted settings.
+## Install
 
-## Download and Install
-
-### Option 1: Download installer (recommended)
-
-1. Go to: `https://github.com/gwenclawbot/matrix-screensaver/releases/latest`
+1. Go to [Releases](https://github.com/gwenclawbot/matrix-screensaver/releases/latest)
 2. Download `MatrixScreensaverSetup.exe`
-3. Run the installer
+3. Run the installer — prerequisites (WebView2 Runtime) are installed automatically if needed
 4. Open **Screen Saver Settings** and select **MatrixScreensaver**
 
-The installer installs prerequisites automatically (WebView2 Runtime) if needed.
+## Features
 
-### Option 2: One command (PowerShell)
+- Full-screen animation across all monitors
+- Preview in the Screen Saver Settings panel
+- Settings dialog for speed, FPS, bloom, columns, palette, and more
+- Per-user install (no admin required) or system-wide install
 
-Run PowerShell as Administrator, then run:
+## Settings
 
-```powershell
-irm https://raw.githubusercontent.com/gwenclawbot/matrix-screensaver/main/install.ps1 | iex
+Right-click the desktop → Personalize → Lock screen → Screen saver → **Settings**
+
+Or run directly:
+
+```
+MatrixScreensaver.scr /c
 ```
 
-This downloads and runs `MatrixScreensaverSetup.exe`, then sets MatrixScreensaver as active for the current user.
+Two layers are available:
+- **Core controls** — common daily tuning (version, columns, speed, FPS, bloom, etc.)
+- **Custom query** — pass any upstream URL parameters directly (e.g. `palette=operator&numColumns=60`)
 
-## Requirements
+## Building from Source
 
-- Windows 10/11
-- .NET 8 SDK (build only)
-- Inno Setup 6+ (installer build)
-
-The installer automatically installs WebView2 Runtime when required.
-
-## Repository Layout
-
-- `app/`: upstream web assets from Rezmason/matrix
-- `packaging/webview2-screensaver/`: native WinForms/WebView2 host
-- `scripts/sync_upstream.ps1`: pull and copy upstream static files
-- `.github/workflows/build.yml`: CI build + test + package
-- `docs/`: architecture, troubleshooting, contributor workflow
-
-## Quick Start
-
-Run everything with one command from the repo root:
+Requirements: Windows, .NET 8 SDK, Inno Setup 6
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap.ps1
 ```
 
-This performs upstream sync and packaging in one run.
+Outputs:
+- `packaging/webview2-screensaver/out/release/` — portable build
+- `packaging/webview2-screensaver/out/installer/` — setup EXE
 
-Output:
-- `packaging/webview2-screensaver/out/release/` (portable)
-- `packaging/webview2-screensaver/out/installer/` (setup EXE, when Inno Setup is installed)
+See [packaging/webview2-screensaver/README.md](packaging/webview2-screensaver/README.md) and [CONTRIBUTING.md](CONTRIBUTING.md) for full contributor workflow.
 
-Optional flags:
+## License
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap.ps1 -SkipSync -NoInstaller
-```
-
-## Command-Line Semantics
-
-- `/s` or `-s`: run as screensaver (default when no args)
-- `/p <hwnd>` or `-p <hwnd>`: preview inside Screen Saver Settings
-- `/c` or `-c`: open settings UI
-- `/t`: test mode for development (Ctrl+O opens settings)
-
-## Settings Model
-
-The Windows settings dialog intentionally has two layers:
-
-- Core controls for common day-to-day tuning (version, columns, speed, FPS, bloom, etc.)
-- Advanced controls and raw query passthrough for upstream parameters
-
-If upstream adds new options before this wrapper adds dedicated controls, use the
-`Custom query (any key=value&...)` field in settings. The wrapper appends this
-query exactly as provided, so all upstream URL options remain available.
-
-## Install Modes
-
-- Per-user (no admin): `.scr` in `%LOCALAPPDATA%\Microsoft\Windows\Screensavers`
-- System-wide (admin): `.scr` in `%WINDIR%\System32`
-- App assets under chosen install root (`{app}\app`), with `app-path.txt` sidecar support
-
-## Testing Checklist
-
-See `docs/troubleshooting.md` and QA checklist in `docs/design.md`.
-
-## License and Attribution
-
-- Upstream `Rezmason/matrix` is MIT licensed.
-- Packaging layer in this repo is MIT licensed.
-- Keep attribution in `LICENSE` and `NOTICE` when redistributing.
-
-## Security/Privacy Notes
-
-- Screensaver reads local files and local settings JSON.
-- If users add remote URLs via custom query options, remote resources may be fetched by the embedded web app.
-
-## Contributing
-
-See `docs/contributor.md`.
+- Upstream [Rezmason/matrix](https://github.com/Rezmason/matrix) is MIT licensed.
+- Packaging in this repository is MIT licensed.
+- See `LICENSE` and `NOTICE` for attribution details.

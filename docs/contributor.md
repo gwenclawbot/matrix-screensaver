@@ -1,28 +1,28 @@
 # Contributor Workflow
 
-## Syncing Upstream
+## Syncing upstream
 
-Run:
-
-```powershell
-./scripts/sync_upstream.ps1
-```
-
-Optional build during sync:
+Run from the repo root:
 
 ```powershell
-./scripts/sync_upstream.ps1 -BuildIfNeeded
+.\scripts\sync_upstream.ps1
 ```
 
-## Recommended Branch Process
+Optionally build the upstream project before syncing (requires npm):
 
-1. Create branch `sync/upstream-<date>`
-2. Run sync script
-3. Commit only `app/` changes + any required packaging compatibility updates
-4. Open PR with upstream commit hash noted
+```powershell
+.\scripts\sync_upstream.ps1 -BuildIfNeeded
+```
 
-## Packaging Updates
+## Recommended branch process
+
+1. Create a branch: `sync/upstream-<date>`
+2. Run the sync script
+3. Commit only `app/` changes and any required packaging compatibility updates
+4. Open a PR noting the upstream commit hash
+
+## Packaging updates
 
 - Keep native wrapper changes in `packaging/webview2-screensaver/`
-- Update tests for command parsing/settings query behavior
+- Update tests for command parsing and settings query behavior
 - Document user-visible settings changes in `README.md`
